@@ -52,7 +52,7 @@ public class AuthService {
     }
 
     private void checkPasswordLength(String password) {
-        if (password.length() <= EXTRACT_PASSWORD_NUMBER {
+        if (password.length() <= EXTRACT_PASSWORD_NUMBER) {
             throw new RuntimeException();
         }
     }
