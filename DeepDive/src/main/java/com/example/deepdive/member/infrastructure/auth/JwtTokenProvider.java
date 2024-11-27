@@ -4,11 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.deepdive.member.domain.auth.Token;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.UUID;
+
+import com.example.deepdive.member.domain.auth.Token;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider implements Token {
@@ -16,8 +17,8 @@ public class JwtTokenProvider implements Token {
     private final Algorithm algorithm;
     private final long expirationPeriod;
 
-    public JwtTokenProvider(final Algorithm algorithm, final long expirationPeriod) {
-        this.algorithm = algorithm;
+    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration-period}") long expirationPeriod) {
+        this.algorithm = Algorithm.HMAC256(secretKey);
         this.expirationPeriod = expirationPeriod;
     }
 
