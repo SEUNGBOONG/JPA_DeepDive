@@ -6,13 +6,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<User, Long> {
 
     boolean existsByMemberNickName(String memberNickName);
 
     boolean existsByMemberEmail(String memberEmail);
 
-    Optional<Member> findMemberByMemberEmail(String memberEmail);
+    Optional<User> findMemberByMemberEmail(String memberEmail);
 
-    Optional<Member> findById(Long memberId);
+    Optional<User> findById(Long memberId);
 }

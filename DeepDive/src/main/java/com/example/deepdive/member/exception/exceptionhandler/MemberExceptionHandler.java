@@ -1,9 +1,12 @@
 package com.example.deepdive.member.exception.exceptionhandler;
 
 import com.example.deepdive.member.exception.exceptionhandler.dto.MemberErrorResponse;
+
 import com.example.deepdive.member.exception.exceptions.MemberErrorCode;
 import com.example.deepdive.member.exception.exceptions.MemberException;
+
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,4 +19,5 @@ public class MemberExceptionHandler {
         MemberErrorResponse memberErrorResponse = new MemberErrorResponse(memberErrorCode.getCustomCode(), memberErrorCode.getMessage());
         return ResponseEntity.status(memberErrorCode.getHttpStatus()).body(memberErrorResponse);
     }
+
 }
