@@ -1,11 +1,14 @@
 package com.example.deepdive.member.domain.member;
 
 import com.example.deepdive.member.exception.exceptions.auth.NotSamePasswordException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +18,8 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member {
+@Table(name = "User")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +37,7 @@ public class Member {
     @Column(nullable = false)
     private String memberNickName;
 
-    public Member(final String memberEmail, final String memberName, final String memberPassword, final String memberNickName) {
+    public User(final String memberEmail, final String memberName, final String memberPassword, final String memberNickName) {
         this.memberEmail = memberEmail;
         this.memberName = memberName;
         this.memberPassword = memberPassword;
