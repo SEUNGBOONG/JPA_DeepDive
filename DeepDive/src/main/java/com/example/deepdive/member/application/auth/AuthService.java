@@ -1,6 +1,6 @@
 package com.example.deepdive.member.application.auth;
 
-import com.example.deepdive.member.domain.member.Member;
+import com.example.deepdive.member.domain.member.User;
 import com.example.deepdive.member.domain.member.MemberRepository;
 import com.example.deepdive.member.exception.exceptions.auth.InvalidSignUpRequestException;
 import com.example.deepdive.member.exception.exceptions.auth.NotFoundMemberByEmailException;
@@ -23,22 +23,27 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class AuthService {
 
     private static final int EXTRACT_PASSWORD_NUMBER = 7;
+// 비밀번호 7글자 제한하는 상수화
 
     private final MemberRepository memberRepository;
+
+    // JPA 저장소
+
     private final JwtTokenProvider jwtTokenProvider;
+    //TokenProvider
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
     @Transactional
-    public Member signUp(SignUpRequest signUpRequest) {
+    public User signUp(SignUpRequest signUpRequest) {
         validateSignupRequestFormat(signUpRequest);
         validateEmailFormat(signUpRequest.memberEmail());
         checkPasswordLength(signUpRequest.memberPassword());
-        Member member = AuthMapper.toMember(signUpRequest);
-        checkDuplicateMemberNickName(member.getMemberNickName());
-        checkDuplicateMemberEmail(member.getMemberEmail());
+        User user = AuthMapper.toMember(signUpRequest);
+        checkDuplicateMemberNickName(user.getMemberNickName());
+        checkDuplicateMemberEmail(user.getMemberEmail());
 
-        return memberRepository.save(member);
+        return memberRepository.save(user);
     }
 
     private void validateSignupRequestFormat(SignUpRequest signUpRequest) {
@@ -78,10 +83,10 @@ public class AuthService {
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest loginRequest) {
         validateLoginRequestFormat(loginRequest);
-        Member member = findMemberByEmail(loginRequest.memberEmail());
-        member.checkPassword(loginRequest.memberPassword());
-        String token = jwtTokenProvider.createToken(member.getId());
-        return new LoginResponse(token, member.getMemberName(), member.getMemberNickName());
+        User user = findMemberByEmail(loginRequest.memberEmail());
+        user.checkPassword(loginRequest.memberPassword());
+        String token = jwtTokenProvider.createToken(user.getId());
+        return new LoginResponse(token, user.getMemberName(), user.getMemberNickName());
     }
 
     private void validateLoginRequestFormat(LoginRequest loginRequest) {
@@ -92,7 +97,7 @@ public class AuthService {
         }
     }
 
-    private Member findMemberByEmail(String email) {
+    private User findMemberByEmail(String email) {
         return memberRepository.findMemberByMemberEmail(email)
                 .orElseThrow(NotFoundMemberByEmailException::new);
     }
