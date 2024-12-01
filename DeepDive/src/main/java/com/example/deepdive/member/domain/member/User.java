@@ -1,5 +1,6 @@
 package com.example.deepdive.member.domain.member;
 
+import com.example.deepdive.member.exception.exceptions.NotContainSpecialChars;
 import com.example.deepdive.member.exception.exceptions.auth.NotSamePasswordException;
 
 import jakarta.persistence.Column;
@@ -20,6 +21,8 @@ import java.util.Objects;
 @Getter
 @Table(name = "User")
 public class User {
+
+    private final String specialChars = "!@#$%^&*()";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +50,18 @@ public class User {
     public void checkPassword(String requestPassword) {
         if (!Objects.equals(memberPassword, requestPassword)) {
             throw new NotSamePasswordException();
+        }
+
+        boolean hasSpecialChar = false;
+        for (char c : specialChars.toCharArray()) {
+            if (requestPassword.contains(String.valueOf(c))) {
+                hasSpecialChar = true;
+                break;
+            }
+        }
+
+        if (!hasSpecialChar) {
+            throw new NotContainSpecialChars();
         }
     }
 }
