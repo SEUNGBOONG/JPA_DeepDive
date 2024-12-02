@@ -44,26 +44,23 @@ public class PostUserService {
     }
 
     @Transactional
-    public Long updateBoard(Long memberId,Long id, PostRequestDTO postRequestDTO) {
+    public Long updateBoard(Long memberId, Long id, PostRequestDTO postRequestDTO) {
         Post post = postRepository
-                .findById(id)
-                .orElseThrow(NotCheckException::new);
+                .findByIdAAndMemberId(memberId, id);
         post.updateTitleOrComments(postRequestDTO);
         return post.getId();
     }
 
     @Transactional
-    public Long updatePassword(Long id, PostRequestDTO postRequestDTO) {
-        Post post = postRepository
-                .findById(id)
-                .orElseThrow(NotCheckException::new);
+    public Long updatePassword(Long memberId, Long id, PostRequestDTO postRequestDTO) {
+        Post post = postRepository.findByIdAAndMemberId(memberId, id);
         post.updatePassword(postRequestDTO.getPassword());
         return post.getId();
     }
 
     @Transactional
-    public Long deleteBoard(Long id) {
-        postRepository.deleteById(id);
+    public Long deleteBoard(Long memberId,Long id) {
+        postRepository.deleteByIdAndMemberId(memberId,id);
         return id;
     }
 }

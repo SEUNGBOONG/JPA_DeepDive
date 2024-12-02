@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class PostController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<PostListResponse> createPost(@Member Long memberId,@RequestBody PostRequestDTO postRequestDTO) {);
+    public ResponseEntity<PostListResponse> createPost(@Member Long memberId, @RequestBody PostRequestDTO postRequestDTO) {
         PostListResponse response = postService.createPost(memberId, postRequestDTO);
         return ResponseEntity.ok(response);
     }
@@ -54,23 +55,20 @@ public class PostController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Long> updatePost(@Member Long memberId, @PathVariable Long id, @RequestBody PostRequestDTO postRequestDTO) {
-        Long updatedPostId = postUserService.updateBoard(id, postRequestDTO);
+        Long updatedPostId = postUserService.updateBoard(memberId, id, postRequestDTO);
         return ResponseEntity.ok(updatedPostId);
     }
 
     @PutMapping("/update-password/{id}")
-    public ResponseEntity<Long> updatePassword(
-            @Member Long memberId,
-            @PathVariable Long id,
-            @RequestBody PostRequestDTO postRequestDTO) {
-        Long updatedPostId = postUserService.updatePassword(id, postRequestDTO);
+    public ResponseEntity<Long> updatePassword(@Member Long memberId, @PathVariable Long id, @RequestBody PostRequestDTO postRequestDTO) {
+        Long updatedPostId = postUserService.updatePassword(memberId, id, postRequestDTO);
         return ResponseEntity.ok(updatedPostId);
     }
 
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deletePost(@Member Long memberId, @PathVariable Long id) {
-        Long deletedPostId = postUserService.deleteBoard(id);
+        Long deletedPostId = postUserService.deleteBoard(memberId, id);
         return ResponseEntity.ok(deletedPostId);
     }
 }

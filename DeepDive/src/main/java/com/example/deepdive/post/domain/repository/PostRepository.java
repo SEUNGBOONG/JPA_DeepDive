@@ -11,5 +11,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<PostListResponse> findAllByCommentsAndId(Long memberId);
 
-    void findByIdAAndMemberId(Long id, Long memberId);
+    Post findByIdAAndMemberId(Long id, Long memberId);
+
+    void deleteByIdAndMemberId(Long memberId,Long id);
 }
