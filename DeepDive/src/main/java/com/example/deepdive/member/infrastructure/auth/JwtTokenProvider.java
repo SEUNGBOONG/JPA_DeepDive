@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider implements Token {
-
     private final Algorithm algorithm;
     private final long expirationPeriod;
 
@@ -26,17 +25,16 @@ public class JwtTokenProvider implements Token {
     @Override
     public String createToken(final Long memberId) {
         return JWT.create()
-                .withClaim("memberId", memberId)
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationPeriod * 1000L))
-                .withJWTId(UUID.randomUUID().toString())
+                .withClaim("memberId", memberId) // 토큰에 memberId 저장
+                .withIssuedAt(new Date()) // 생성 시간
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationPeriod * 1000L)) // 만료 시간
+                .withJWTId(UUID.randomUUID().toString()) // 고유 ID
                 .sign(algorithm);
     }
 
     @Override
     public DecodedJWT verifyToken(String token) {
-        JWTVerifier verifier = JWT.require(algorithm)
-                .build();
-        return verifier.verify(token);
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        return verifier.verify(token); // 토큰 검증
     }
 }

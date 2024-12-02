@@ -1,16 +1,22 @@
 package com.example.deepdive.post.domain.entity;
 
+import com.example.deepdive.member.exception.NotSamePasswordChangeException;
 import com.example.deepdive.member.exception.exceptions.NotContainSpecialChars;
+import com.example.deepdive.post.controller.dto.PostRequestDTO;
+import com.example.deepdive.post.controller.dto.PostUpdatePasswordResponse;
+import com.example.deepdive.post.util.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 @Entity
-public class Post {
+public class Post extends Timestamped {
 
-    private final String specialChars = "!@#$%^&*()";
+    private final String specialChars = "[!@#$%^&*()_+=|<>?{}\\[\\]~-]";
 
     @Id
     private Long id;
@@ -18,13 +24,13 @@ public class Post {
     @Column(nullable = false)
     private Long memberId;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String comments;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
     public Post(final Long memberId, final String title, final String comments, final String password) {
@@ -34,8 +40,24 @@ public class Post {
         this.password = validatePassword(password);
     }
 
+    public void updateTitleOrComments(final PostRequestDTO postRequestDTO) {
+        this.title = postRequestDTO.getTitle();
+        this.comments = postRequestDTO.getContent();
+    }
+
+    public void updatePassword (String postRequestDTO){
+        this.password= String.valueOf(validateUpdatePassword(postRequestDTO));
+    }
+
     public Post() {
 
+    }
+
+    private PostUpdatePasswordResponse validateUpdatePassword(String newPassword) {
+        if (Objects.equals(newPassword, password)) {
+            throw new NotSamePasswordChangeException();
+        }
+        return new PostUpdatePasswordResponse(newPassword);
     }
 
     private String validateComment(final String comments) {
