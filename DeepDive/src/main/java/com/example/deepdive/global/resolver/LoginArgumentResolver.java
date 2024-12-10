@@ -20,8 +20,9 @@ import java.util.Optional;
 public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
     private static final String TOKEN_HEADER_NAME = "Authorization";
-
+// JWT 토큰을 찾기위한 이름 설정
     private final JwtTokenService jwtTokenService;
+    // 서비스 소환
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -30,6 +31,8 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         return isLoginAnnotation && isMemberIdType;
     }
 
+    //파라미터가 처리 대상인지 검증하는 메서드
+    //조건이 만족되면  밑에 메서드 실행
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
@@ -38,4 +41,10 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         String token = tokenHeader.substring(7);
         return jwtTokenService.verifyAndExtractJwtToken(token);
     }
+    //Authorization 헤더에서 JWT 토큰 값을 읽어옵니다.
+    //헤더가 없는 경우, NotFoundTokenException 예외를 던집니다.
+    //헤더 값에서 Bearer 부분을 제거(substring(7)).
+    //JWT 토큰을 검증하고 memberId를 추출.
+    //검증 및 추출은 JwtTokenService에 위임.
+    //반환된 memberId가 컨트롤러 메서드 파라미터에 주입됩니다.
 }

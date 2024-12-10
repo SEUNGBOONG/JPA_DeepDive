@@ -23,7 +23,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class AuthService {
 
     private static final int EXTRACT_PASSWORD_NUMBER = 7;
-// 비밀번호 7글자 제한하는 상수화
+    // 비밀번호 7글자 제한하는 상수화
 
     private final MemberRepository memberRepository;
 
@@ -44,6 +44,17 @@ public class AuthService {
         checkDuplicateMemberEmail(user.getMemberEmail());
 
         return memberRepository.save(user);
+    }
+    //다양한 검증을 통한 회원가입
+    // 조금 더 객체지향적으로 할 수 있을지에 대한 고민을 해봐야겠다.
+
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest loginRequest) {
+        validateLoginRequestFormat(loginRequest);
+        User user = findMemberByEmail(loginRequest.memberEmail());
+        user.checkPassword(loginRequest.memberPassword());
+        String token = jwtTokenProvider.createToken(user.getId());
+        return new LoginResponse(token, user.getMemberName(), user.getMemberNickName());
     }
 
     private void validateSignupRequestFormat(SignUpRequest signUpRequest) {
@@ -78,15 +89,6 @@ public class AuthService {
         if (memberRepository.existsByMemberEmail(email)) {
             throw new RuntimeException();
         }
-    }
-
-    @Transactional(readOnly = true)
-    public LoginResponse login(LoginRequest loginRequest) {
-        validateLoginRequestFormat(loginRequest);
-        User user = findMemberByEmail(loginRequest.memberEmail());
-        user.checkPassword(loginRequest.memberPassword());
-        String token = jwtTokenProvider.createToken(user.getId());
-        return new LoginResponse(token, user.getMemberName(), user.getMemberNickName());
     }
 
     private void validateLoginRequestFormat(LoginRequest loginRequest) {

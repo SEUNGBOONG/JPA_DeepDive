@@ -34,7 +34,6 @@ public class PostController {
     private final PostService postService;
     private final PostUserService postUserService;
 
-
     @PostMapping("/create")
     public ResponseEntity<PostListResponse> createPost(@Member Long memberId, @RequestBody PostRequestDTO postRequestDTO) {
         PostListResponse response = postService.createPost(memberId, postRequestDTO);
@@ -50,6 +49,12 @@ public class PostController {
     @GetMapping("/user/{memberId}")
     public ResponseEntity<List<PostUserResponse>> getUserPosts(@Member Long memberId) {
         List<PostUserResponse> userPosts = postUserService.findUserAllPost(memberId);
+        return ResponseEntity.ok(userPosts);
+    }
+
+    @GetMapping("/user/{memberId}")
+    public ResponseEntity<PostUserResponse> getUserPost(@Member Long memberId) {
+        PostUserResponse userPosts = postUserService.findUserPost(memberId);
         return ResponseEntity.ok(userPosts);
     }
 
@@ -71,4 +76,12 @@ public class PostController {
         Long deletedPostId = postUserService.deleteBoard(memberId, id);
         return ResponseEntity.ok(deletedPostId);
     }
+
+    //PostController는 REST API 엔드포인트를 정의하고 있으며, PostService와 PostUserService를 사용하여 게시물 관련 요청을 처리합니다.
+    //
+    //생성 (createPost): 게시물을 생성할 때, PostRequestDTO를 받아서 유효성을 검사하고, PostService에서 createPost 메서드를 호출하여 새로운 게시물을 저장합니다.
+    //게시물 목록 조회 (getAllPosts): PostService의 findAllPost를 통해 모든 게시물을 가져와서 반환합니다.
+    //사용자 게시물 조회 (getUserPosts, getUserPost): 두 개의 메서드가 정의되어 있으나, getUserPosts와 getUserPost는 같은 URL 경로(/user/{memberId})를 사용하고 있어 이 부분에서 충돌이 발생할 수 있습니다. 하나를 수정해야 합니다.
+    //게시물 수정 (updatePost, updatePassword): 게시물의 제목과 내용을 수정하거나 비밀번호를 업데이트합니다.
+    //게시물 삭제 (deletePost): PostUserService의 deleteBoard를 통해 게시물을 삭제합니다.
 }

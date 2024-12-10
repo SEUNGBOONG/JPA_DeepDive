@@ -82,3 +82,10 @@ public class Post extends Timestamped {
         return password;
     }
 }
+//Post 엔티티는 게시물의 필드와 관련된 유효성 검사 및 비즈니스 로직을 처리합니다.
+//
+//특수문자 검증: 게시물의 비밀번호에 특수문자가 포함되어 있는지 확인하는 기능을 제공합니다. 포함되지 않으면 NotContainSpecialChars 예외를 던집니다.
+//댓글 검증: 댓글에 "시"라는 단어가 포함되어 있으면 예외를 던집니다.
+//비밀번호 업데이트 검증: 비밀번호를 변경하려 할 때, 기존 비밀번호와 동일하면 NotSamePasswordChangeException 예외를 던집니다.
+
+

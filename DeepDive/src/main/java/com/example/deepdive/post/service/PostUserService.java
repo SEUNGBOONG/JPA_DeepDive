@@ -1,7 +1,5 @@
 package com.example.deepdive.post.service;
 
-import com.example.deepdive.member.exception.exceptions.NotCheckException;
-
 import com.example.deepdive.post.controller.dto.PostRequestDTO;
 import com.example.deepdive.post.controller.dto.PostUserResponse;
 
@@ -25,8 +23,7 @@ public class PostUserService {
 
     public PostUserResponse findUserPost(Long memberId) {
         Post post = postRepository
-                .findById(memberId)
-                .orElseThrow(NotCheckException::new);
+                .findAllByMemberId(memberId);
 
         return new PostUserResponse(post.getTitle(), memberId, post.getCreatedAt(), post.getModifiedAt());
     }

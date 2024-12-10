@@ -34,7 +34,6 @@ public class PostService {
     public List<PostListResponse> findAllPost() {
         List<Post> boardList = postRepository.findAll();
         List<PostListResponse> responseDtoList = new ArrayList<>();
-
         for (Post post : boardList) {
             responseDtoList.add(
                     new PostListResponse(post)
@@ -53,3 +52,11 @@ public class PostService {
     }
 
 }
+
+//PostService는 게시물의 생성, 조회 및 유효성 검사를 담당합니다.
+//
+//게시물 생성 시 제목의 길이를 체크하고, 제목이 비어 있는지 확인합니다.
+//validateTitle 메서드에서 제목 길이와 비어있는 제목에 대한 예외 처리를 하고 있습니다.
+
+
+// 개선해야 한다고 생각하는 점: -> 유효성 검사는 클라이언트에서 먼저 처리하도록 유도하는 것이 좋아보인다!

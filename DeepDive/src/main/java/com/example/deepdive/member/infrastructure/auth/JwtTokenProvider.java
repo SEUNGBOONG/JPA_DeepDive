@@ -21,6 +21,7 @@ public class JwtTokenProvider implements Token {
         this.algorithm = Algorithm.HMAC256(secretKey);
         this.expirationPeriod = expirationPeriod;
     }
+    // JWT 토큰 생성 및 검증 기능을 제공
 
     @Override
     public String createToken(final Long memberId) {
@@ -31,10 +32,14 @@ public class JwtTokenProvider implements Token {
                 .withJWTId(UUID.randomUUID().toString()) // 고유 ID
                 .sign(algorithm);
     }
+    //주어진 사용자 ID를 사용하여 JWT 토큰을 생성. 토큰에는 생성시간 만료 시간 고유 ID 포함됨
 
     @Override
     public DecodedJWT verifyToken(String token) {
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token); // 토큰 검증
     }
+    //JWT 토큰을 검증하거, 파싱된 정보를 반환.
+    //HMA256 알고리즘으로 서명.
+    //auth0의 JWT라이브러리를 사용하여 토큰 생성 및 검증
 }
