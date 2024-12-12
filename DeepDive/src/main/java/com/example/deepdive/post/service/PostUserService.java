@@ -56,8 +56,8 @@ public class PostUserService {
     }
 
     @Transactional
-    public Long deleteBoard(Long memberId,Long id) {
-        postRepository.deleteByIdAndMemberId(memberId,id);
+    public Long deleteBoard(Long memberId, Long id) {
+        postRepository.deleteByIdAndMemberId(memberId, id);
         return id;
     }
 }

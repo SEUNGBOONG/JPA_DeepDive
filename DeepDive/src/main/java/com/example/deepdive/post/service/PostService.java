@@ -3,13 +3,11 @@ package com.example.deepdive.post.service;
 import com.example.deepdive.global.exception.LengthTitleException;
 import com.example.deepdive.global.exception.NullTitleException;
 
-import com.example.deepdive.member.exception.exceptions.NotCheckException;
 import com.example.deepdive.post.controller.dto.PostListResponse;
 import com.example.deepdive.post.controller.dto.PostRequestDTO;
 
 import com.example.deepdive.post.domain.entity.Post;
 import com.example.deepdive.post.domain.repository.PostRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
