@@ -2,6 +2,7 @@ package com.example.deepdive.member.application.auth;
 
 import com.example.deepdive.member.domain.member.User;
 import com.example.deepdive.member.domain.member.MemberRepository;
+
 import com.example.deepdive.member.exception.exceptions.auth.InvalidSignUpRequestException;
 import com.example.deepdive.member.exception.exceptions.auth.NotFoundMemberByEmailException;
 import com.example.deepdive.member.infrastructure.auth.JwtTokenProvider;
@@ -26,7 +27,6 @@ public class AuthService {
     // 비밀번호 7글자 제한하는 상수화
 
     private final MemberRepository memberRepository;
-
     // JPA 저장소
 
     private final JwtTokenProvider jwtTokenProvider;
