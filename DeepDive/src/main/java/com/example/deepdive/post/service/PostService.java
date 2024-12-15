@@ -51,7 +51,7 @@ public class PostService {
 
 }
 
-//PostService는 게시물의 생성, 조회 및 유효성 검사를 담당합니다.
+//PostService는 게시물의 생성, 조회 및 유효성 검사를
 //
 //게시물 생성 시 제목의 길이를 체크하고, 제목이 비어 있는지 확인합니다.
 //validateTitle 메서드에서 제목 길이와 비어있는 제목에 대한 예외 처리를 하고 있습니다.
